@@ -1,0 +1,49 @@
+# Rust ile ilgili
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# Solana ile ilgili
+test-ledger/
+.anchor/
+
+# Node.js ile ilgili
+node_modules/
+dist/
+build/
+
+# IDE ve editör dosyaları
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Ortam değişkenleri ve gizli bilgiler
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Log dosyaları
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test coverage
+coverage/
+
+# Derleme çıktıları
+/dist/
+/build/
+/out/
+
+# Solana program derleme çıktıları
+/programs/*/target/
+
+# Yerel geliştirme dosyaları
+.localnet/
+.testnet/
+.devnet/ 
