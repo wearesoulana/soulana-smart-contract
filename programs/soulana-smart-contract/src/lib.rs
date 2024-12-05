@@ -12,15 +12,16 @@ pub mod donation_program {
 
     pub fn donate_and_reward(
         ctx: Context<DonateAndReward>,
-        amount: u64, // Bağış miktarı (SOL)
+        amount: u64, // Amount of SOL to donate (in lamports)
     ) -> Result<()> {
-        // Bağış miktarı başına ödül hesaplama
+        // Calculate reward tokens based on donation amount
+        // Reward ratio: 1 SOL = 1000 tokens
         let reward_amount = amount * 1000;
 
         msg!("Donated amount: {} lamports", amount);
         msg!("Reward tokens to mint: {}", reward_amount);
 
-        // Token mint etme işlemi
+        // Execute token minting operation
         let mint_to_ctx = ctx.accounts.mint_to_context();
         token::mint_to(mint_to_ctx, reward_amount)?;
 
@@ -33,11 +34,11 @@ pub struct DonateAndReward<'info> {
     #[account(mut)]
     pub donor: Signer<'info>,
 
-    /// CHECK: Bu hesap Associated Token Program tarafından başlatılacak
+    /// CHECK: This account will be initialized by the Associated Token Program
     #[account(mut)]
     pub reward_account: UncheckedAccount<'info>,
 
-    /// CHECK: Bu hesap token mint hesabıdır ve program tarafından kontrol edilecektir
+    /// CHECK: This is the token mint account and will be validated by the program
     #[account(mut)]
     pub mint: AccountInfo<'info>,
 
@@ -48,6 +49,7 @@ pub struct DonateAndReward<'info> {
 }
 
 impl<'info> DonateAndReward<'info> {
+    // Helper function to create the context for minting tokens
     pub fn mint_to_context(&self) -> CpiContext<'_, '_, '_, 'info, MintTo<'info>> {
         let cpi_accounts = MintTo {
             mint: self.mint.clone(),
